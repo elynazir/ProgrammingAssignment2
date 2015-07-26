@@ -1,12 +1,12 @@
-## The first function, makeVector creates a special "vector", which is really a list containing a function to
-## 1. set the value of the vector
-## 2. get the value of the vector
-## 3. set the value of the mean
-## 4. get the value of the mean
+# The first function, makeVector creates a special "vector", which is really a list containing a function to
+# 1. set the value of the vector
+# 2. get the value of the vector
+# 3. set the value of the mean
+# 4. get the value of the mean
 
 makeCacheMatrix <- function(x = matrix()) {
 
-  # initialize the inverse matrix value
+  # initialize the inverse matrix 
   inv <- NULL
   
   # set the value of the matrix
@@ -19,14 +19,13 @@ makeCacheMatrix <- function(x = matrix()) {
   get <- function() x
   
   # set the value of the inverse
-  set_inverse <- function(inv_input) inv <<- inv_input
+  setinverse <- function(inv_input) inv <<- inv_input
+  
   # get the value of the inverse
-  get_inverse <- function() inv
+  getinverse <- function() inv
   
   # return a list of all the above functions
-  list(set = set, get = get,
-       set_inverse = set_inverse,
-       get_inverse = get_inverse)
+  list(set = set, get = get, setinverse = setinverse, getinverse = getinverse)
   
 }
 
@@ -39,22 +38,24 @@ makeCacheMatrix <- function(x = matrix()) {
 ## via the setmean function.
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+  
   # check if the inverse is already cached,
-  # if so, we get the inverse from the cache directly
-  inv <- x$get_inverse()
+  # if true, get the inverse from the cache directly
+  inv <- x$getinverse()
   if(!is.null(inv)) {
     message("getting cached inverse")
     return(inv)
   }
   # else, we first get the matrix
-    data <- x$get()
+  data <- x$get()
   
-  # and calculate the inverse
+  # calculate the inverse
   inv <- solve(data, ...)
   
-  # next, cache the inverse of the matrix
-  x$set_inverse(inv)
-  # and finally, return the result
+  # cache the inverse of the matrix
+  x$setinverse(inv)
+  
+  # return the result
   inv
 }
+
